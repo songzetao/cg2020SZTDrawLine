@@ -17,6 +17,7 @@ IMPLEMENT_DYNCREATE(CCSelectControl, CFormView)
 
 CCSelectControl::CCSelectControl()
 	: CFormView(IDD_SELECTCONTROL)
+	, m_ddaRunTime(_T("songzetao"))
 {
 
 	//  m_bRunTime = 0.0f;
@@ -28,11 +29,12 @@ CCSelectControl::~CCSelectControl()
 
 void CCSelectControl::DoDataExchange(CDataExchange* pDX)
 {
-	//CFormView::DoDataExchange(pDX);
+	CFormView::DoDataExchange(pDX);
 
 	//DDX_Text(pDX, IDC_DDARUNTIME, Ccg2020SZTDrawLineDoc::m_ddaRunTime);
 
-
+	 
+	DDX_Text(pDX, IDC_DDARUNTIME, m_ddaRunTime);
 }
 
 BEGIN_MESSAGE_MAP(CCSelectControl, CFormView)
@@ -171,17 +173,24 @@ void CCSelectControl::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
-	// TODO: 在此添加专用代码和/或调用基类
-	CStatic* ddaRunTime = (CStatic*)GetDlgItem(IDC_DDARUNTIME);
+	//// TODO: 在此添加专用代码和/或调用基类
+	//CStatic* ddaRunTime = (CStatic*)GetDlgItem(IDC_DDARUNTIME);
+	//Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
+	//CString DDA_Time;
+	//DDA_Time.Format(_T("DDA Run time:%f"), pDoc->m_ddaRunTime);
+	//ddaRunTime->SetWindowTextW(DDA_Time);
 	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
-	CString DDA_Time;
-	DDA_Time.Format(_T("DDA Run time:%f"), pDoc->m_ddaRunTime);
-	ddaRunTime->SetWindowTextW(DDA_Time);
-
+	UpdateData(TRUE);
+	m_ddaRunTime.Format(_T("DDA Run time:%f"), pDoc->m_ddaRunTime);
+	UpdateData(FALSE);
 }
 
 
 void CCSelectControl::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/)
 {
 	// TODO: 在此添加专用代码和/或调用基类
+	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
+	UpdateData(TRUE);
+	m_ddaRunTime.Format(_T("DDA Run time:%f"), pDoc->m_ddaRunTime);
+	UpdateData(FALSE);
 }

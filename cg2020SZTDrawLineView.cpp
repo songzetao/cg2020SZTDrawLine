@@ -156,6 +156,17 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 		this->Bline(pDC, 0, 0, -150, -400);
 		this->Bline(pDC, 0, 200, 100, 200);
 		CString m_bRunTime;
+		clock_t startTime, endTime;
+		startTime = clock();//计时开始
+		for (int i = 0; i < 200; i++) {
+			this->DDAlineError(pDC, 0, 0, 99, 100);
+		}
+		endTime = clock();//计时结束
+		float t;
+		t = endTime - startTime;
+		pDoc->m_ddaRunTime = t;
+		pDoc->UpdateAllViews(this);
+
 
 		
 	
