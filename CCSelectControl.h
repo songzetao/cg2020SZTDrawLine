@@ -34,9 +34,9 @@ public:
 	afx_msg void OnClickedDdaline();
 	afx_msg void OnClickedCeshi();
 	afx_msg void OnClickedMline();
-	afx_msg void OnClickedError();
-	afx_msg void OnClickedTime();
-	afx_msg void OnClickedSmooth();
+//	afx_msg void OnClickedError();
+//	afx_msg void OnClickedTime();
+//	afx_msg void OnClickedSmooth();
 //	virtual void OnInitialUpdate();
 //	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 //	float m_bRunTime;

@@ -43,9 +43,9 @@ BEGIN_MESSAGE_MAP(CCSelectControl, CFormView)
 	ON_BN_CLICKED(COMPARE, &CCSelectControl::OnClickedCompare)
 	ON_BN_CLICKED(DDALINE, &CCSelectControl::OnClickedDdaline)
 	ON_BN_CLICKED(MLINE, &CCSelectControl::OnClickedMline)
-	ON_BN_CLICKED(ERROR, &CCSelectControl::OnClickedError)
-	ON_BN_CLICKED(TIme, &CCSelectControl::OnClickedTime)
-	ON_BN_CLICKED(SMOOTH, &CCSelectControl::OnClickedSmooth)
+//	ON_BN_CLICKED(ERROR, &CCSelectControl::OnClickedError)
+//	ON_BN_CLICKED(TIme, &CCSelectControl::OnClickedTime)
+//	ON_BN_CLICKED(SMOOTH, &CCSelectControl::OnClickedSmooth)
 END_MESSAGE_MAP()
 
 
@@ -123,48 +123,48 @@ void CCSelectControl::OnClickedMline()
 }
 
 
-void CCSelectControl::OnClickedError()
-{
-	// TODO: 在此添加控件通知处理程序代码
-	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
-	CString str;
-	str.Format(L"%f", pDoc->aError);
-	GetDlgItem(IDC_EDIT4)->SetWindowText(str);
-	str.Format(L"%f", pDoc->bError);
-	GetDlgItem(IDC_EDIT5)->SetWindowText(str);
-	str.Format(L"%f", pDoc->mError);
-	GetDlgItem(IDC_EDIT6)->SetWindowText(str);
-}
+//void CCSelectControl::OnClickedError()
+//{
+//	// TODO: 在此添加控件通知处理程序代码
+//	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
+//	CString str;
+//	str.Format(L"%f", pDoc->aError);
+//	GetDlgItem(IDC_EDIT4)->SetWindowText(str);
+//	str.Format(L"%f", pDoc->bError);
+//	GetDlgItem(IDC_EDIT5)->SetWindowText(str);
+//	str.Format(L"%f", pDoc->mError);
+//	GetDlgItem(IDC_EDIT6)->SetWindowText(str);
+//}
 
 
-void CCSelectControl::OnClickedTime()
-{
-	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
-	CString str;
-	str.Format(L"%f", pDoc->aTime);
-	GetDlgItem(IDC_EDIT1)->SetWindowText(str);
-	CString strb;
-	strb.Format(L"%f", pDoc->bTime);
-	GetDlgItem(IDC_EDIT2)->SetWindowText(strb);
-	str.Format(L"%f", pDoc->mTime);
-	GetDlgItem(IDC_EDIT3)->SetWindowText(str);
-}
+//void CCSelectControl::OnClickedTime()
+//{
+//	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
+//	CString str;
+//	str.Format(L"%f", pDoc->aTime);
+//	GetDlgItem(IDC_EDIT1)->SetWindowText(str);
+//	CString strb;
+//	strb.Format(L"%f", pDoc->bTime);
+//	GetDlgItem(IDC_EDIT2)->SetWindowText(strb);
+//	str.Format(L"%f", pDoc->mTime);
+//	GetDlgItem(IDC_EDIT3)->SetWindowText(str);
+//}
 
 
-void CCSelectControl::OnClickedSmooth()
-{
-	// TODO: 在此添加控件通知处理程序代码
-	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
-	CString str("0.723916");
-	//str.Format(L"%f", pDoc->aTime);
-	GetDlgItem(IDC_EDIT7)->SetWindowText(str);
-	CString str1("0.623451");
-	//str.Format(L"%f", pDoc->aTime);
-	GetDlgItem(IDC_EDIT8)->SetWindowText(str1);
-	CString str2("0.900121");
-	//str.Format(L"%f", pDoc->aTime);
-	GetDlgItem(IDC_EDIT9)->SetWindowText(str2);
-}
+//void CCSelectControl::OnClickedSmooth()
+//{
+//	// TODO: 在此添加控件通知处理程序代码
+//	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
+//	CString str("0.723916");
+//	//str.Format(L"%f", pDoc->aTime);
+//	GetDlgItem(IDC_EDIT7)->SetWindowText(str);
+//	CString str1("0.623451");
+//	//str.Format(L"%f", pDoc->aTime);
+//	GetDlgItem(IDC_EDIT8)->SetWindowText(str1);
+//	CString str2("0.900121");
+//	//str.Format(L"%f", pDoc->aTime);
+//	GetDlgItem(IDC_EDIT9)->SetWindowText(str2);
+//}
 
 
 
@@ -181,7 +181,8 @@ void CCSelectControl::OnInitialUpdate()
 	//ddaRunTime->SetWindowTextW(DDA_Time);
 	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
 	UpdateData(TRUE);
-	m_ddaRunTime.Format(_T("DDA Run time:%f"), pDoc->m_ddaRunTime);
+	m_ddaRunTime.Format(_T("DDA Run time:%f\nB Run time:%f\nM Run time:%f\n\nDDA Run error:%f\nB Run error:%f\nM Run error:%f"),
+		pDoc->m_ddaRunTime,pDoc->m_bRunTime,pDoc->m_mRunTime,pDoc->aError,pDoc->bError,pDoc->mError);
 	UpdateData(FALSE);
 }
 
@@ -191,6 +192,7 @@ void CCSelectControl::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*
 	// TODO: 在此添加专用代码和/或调用基类
 	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
 	UpdateData(TRUE);
-	m_ddaRunTime.Format(_T("DDA Run time:%f"), pDoc->m_ddaRunTime);
+	m_ddaRunTime.Format(_T("DDA Run time:%f\nB Run time:%f\nM Run time:%f\n\nDDA Run error:%f\nB Run error:%f\nM Run error:%f"),
+		pDoc->m_ddaRunTime, pDoc->m_bRunTime, pDoc->m_mRunTime, pDoc->aError, pDoc->bError, pDoc->mError);
 	UpdateData(FALSE);
 }

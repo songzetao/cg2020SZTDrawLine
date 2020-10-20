@@ -26,6 +26,8 @@ public:
 	float bSmooth;//B算法的光滑度
 	float mSmooth;//中点画线算法的光滑度
 	float m_ddaRunTime;
+	float m_bRunTime;
+	float m_mRunTime;
 
 // 操作
 public:

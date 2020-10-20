@@ -20,9 +20,7 @@
 #define new DEBUG_NEW
 #endif
 
-#测试
-#测试是否能回退版本
-#宋泽涛
+
 // Ccg2020SZTDrawLineView
 
 IMPLEMENT_DYNCREATE(Ccg2020SZTDrawLineView, CView)
@@ -42,7 +40,6 @@ Ccg2020SZTDrawLineView::Ccg2020SZTDrawLineView() noexcept
 	// TODO: 在此处添加构造代码
 	m_wndHeight = 0;
 	m_wndWidth = 0;
-
 
 }
 
@@ -80,59 +77,52 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 	pDC->SelectObject(pOLDPEN);
 	//pDC->FillRect();
 	CBrush* oldBrush = new CBrush(RGB(1, 1, 1));
-	int flag = 1;
-	if (flag ) {
-		clock_t startTime, endTime;
-		startTime = clock();//计时开始
-		for (int i = 0; i < 200; i++) {
-			this->DDAlineError(pDC, 0, 0, 99, 100);
-		}
-		endTime = clock();//计时结束
-		float t;
-		t = endTime - startTime;
-		float err = 0;
-		for (int i = 0; i < 200; i++) {
-			err += this->DDAlineError(pDC, 0, 0, 99, 100);
-		}
-		/*CString str;
-		str.Format(L"%f", t);
-		pDC->TextOutW(100, 120, str);*/
-		pDoc->aTime = t;
-		pDoc->aError = err;
-		pDoc->m_ddaRunTime = t;
-		pDoc->UpdateAllViews(this);
-
-		startTime = clock();//计时开始
-		for (int i = 0; i < 200; i++) {
-			this->Bline(pDC, 0, 0, 99, 100);
-			/*this->Bline(pDC, 0, 0, -150, -400);*/
-		}
-		endTime = clock();//计时结束
-		t = endTime - startTime;
-		pDoc->bTime = t;
-
-		for (int i = 0; i < 200; i++) {
-			err += this->BlineError(pDC, 0, 0, 99, 100);
-		}
-		pDoc->bError = err;
 
 
-		startTime = clock();//计时开始
-		for (int i = 0; i < 200; i++) {
-			this->Mline(pDC, 0, 0, 99, 100);
-			/*this->Mline(pDC, 0, 0, -150, -400);*/
-		}
-		endTime = clock();//计时结束
-		t = endTime - startTime;
-		pDoc->mTime = t;
-		for (int i = 0; i < 200; i++) {
-			this->MlineError(pDC, 0, 0, 99, 100, err);
-		}
-		pDoc->mError = err;
-		flag = 0;
-	}
-		
-		
+	clock_t startTime, endTime;
+	//startTime = clock();//计时开始
+	//for (int i = 0; i < 200; i++) {
+	//	this->DDAlineError(pDC, 0, 0, 99, 100);
+	//}
+	//endTime = clock();//计时结束
+	//float t;
+	//t = endTime - startTime;
+	float err = 0;
+	err += this->DDAlineSmooth(pDC, 0, 0, 25,25 );
+	pDoc->aError = err;
+	/*CString str;
+	str.Format(L"%f", t);
+	pDC->TextOutW(100, 120, str);*/
+	/*pDoc->aTime = t;*/
+	
+
+	//startTime = clock();//计时开始
+	//for (int i = 0; i < 200; i++) {
+	//	this->Bline(pDC, 0, 0, 99, 100);
+	//	/*this->Bline(pDC, 0, 0, -150, -400);*/
+	//}
+	//endTime = clock();//计时结束
+	//t = endTime - startTime;
+	//pDoc->bTime = t;
+	float re = 0;
+	re += this->BlineSmooth(pDC, 0, 0, 24, 25);
+	pDoc->bError = re;
+
+	//startTime = clock();//计时开始
+	//for (int i = 0; i < 200; i++) {
+	//	this->Mline(pDC, 0, 0, 99, 100);
+	//	/*this->Mline(pDC, 0, 0, -150, -400);*/
+	//}
+	//endTime = clock();//计时结束
+	//t = endTime - startTime;
+	//pDoc->mTime = t;
+	float e=0;
+	int times = 0;
+	float error=0;
+	e = 0; times = 0;
+	this->MlineSmooth(pDC, 0, 0, 25, 25, e,times);
+	error += e / times;
+	pDoc->mError = error;
 
 	if (pDoc->m_opMode == 0) {
 		this->DDAline(pDC, 0, 0, 400, 150);
@@ -144,11 +134,20 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 		this->DDAline(pDC, 0, 0, 150, -400);
 		this->DDAline(pDC, 0, 0, -150, -400);
 		this->DDAline(pDC, 0, 0, 100, 100);
-		
+		clock_t startTime, endTime;
+		startTime = clock();//计时开始
+		for (int i = 0; i < 200; i++) {
+			this->DDAline(pDC, 0, 0, 99, 100);
+		}
+		endTime = clock();//计时结束
+		float t;
+		t = endTime - startTime;
+		pDoc->m_ddaRunTime = t;
+		pDoc->UpdateAllViews(this);
 		
 	}
 	else if (pDoc->m_opMode == 1) {
-		this->Bline(pDC, 0, 0, 400, 150);
+		/*this->Bline(pDC, 0, 0, 400, 150);
 		this->Bline(pDC, 0, 0, 400, -150);
 		this->Bline(pDC, 0, 0, -400, 150);
 		this->Bline(pDC, 0, 0, -400, -150);
@@ -156,17 +155,16 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 		this->Bline(pDC, 0, 0, -150, 400);
 		this->Bline(pDC, 0, 0, 150, -400);
 		this->Bline(pDC, 0, 0, -150, -400);
-		this->Bline(pDC, 0, 200, 100, 200);
-		CString m_bRunTime;
+		this->Bline(pDC, 0, 200, 100, 200);*/
 		clock_t startTime, endTime;
 		startTime = clock();//计时开始
 		for (int i = 0; i < 200; i++) {
-			this->DDAlineError(pDC, 0, 0, 99, 100);
+			this->Bline(pDC, 0, 0, 99, 100);
 		}
 		endTime = clock();//计时结束
 		float t;
 		t = endTime - startTime;
-		pDoc->m_ddaRunTime = t;
+		pDoc->m_bRunTime = t;
 		pDoc->UpdateAllViews(this);
 
 
@@ -205,6 +203,17 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 		this->Mline(pDC, 0, 0, 150, -400);
 		this->Mline(pDC, 0, 0, -150, -400);
 		this->Mline(pDC, 0, 0, 100, 100);
+
+		clock_t startTime, endTime;
+		startTime = clock();//计时开始
+		for (int i = 0; i < 200; i++) {
+			this->Mline(pDC, 0, 0, 99, 100);
+		}
+		endTime = clock();//计时结束
+		float t;
+		t = endTime - startTime;
+		pDoc->m_mRunTime = t;
+		pDoc->UpdateAllViews(this);
 	}
 	
 	//pDC->SelectObject(oldbrush);
@@ -300,7 +309,7 @@ void Ccg2020SZTDrawLineView::DDAline(CDC* pDC, int x1, int y1, int x2, int y2)
 
 
 
-float Ccg2020SZTDrawLineView::DDAlineError(CDC* pDC,int x1, int y1, int x2, int y2)
+float Ccg2020SZTDrawLineView::DDAlineSmooth(CDC* pDC,int x1, int y1, int x2, int y2)
 {
 	int steps;
 	float m, x, y, dx, dy;
@@ -319,7 +328,7 @@ float Ccg2020SZTDrawLineView::DDAlineError(CDC* pDC,int x1, int y1, int x2, int 
 		x += dx;
 		y += dy;
 	}
-	return error;
+	return error/steps;
 }
 
 void Ccg2020SZTDrawLineView::Bline(CDC* pDC, int x1, int y1, int x2, int y2)
@@ -353,14 +362,14 @@ void Ccg2020SZTDrawLineView::Bline(CDC* pDC, int x1, int y1, int x2, int y2)
 		else
 			x += xSign;
 		e += 2 * dy;
-
 	}
 }
 
-float Ccg2020SZTDrawLineView::BlineError(CDC* pDC, int x1, int y1, int x2, int y2)
+float Ccg2020SZTDrawLineView::BlineSmooth(CDC* pDC, int x1, int y1, int x2, int y2)
 {
 	int x, y, dx, dy, e, xSign, ySign, interChange = 0;
 	float error=0;
+	float ry;
 	dx = abs(x2 - x1);
 	dy = abs(y2 - y1);
 	if (dx < dy) {
@@ -377,12 +386,8 @@ float Ccg2020SZTDrawLineView::BlineError(CDC* pDC, int x1, int y1, int x2, int y
 	e = 2 * dy - dx;
 	for (int i = 0; i <= dx; i++) {
 		pDC->SetPixel(x + m_wndWidth / 2, m_wndHeight / 2 - y, RGB(0, 0, 255));
-		if (e > 0) {
-			error += 1 - float(dy)/dx;
-		}
-		else{
-			error += float(dy) / dx;
-		}
+		ry = (float)(x - x1) / (x2 - x1) * (y2 - y1) + y1;
+		error += abs(ry - y);
 		if (e > 0) {
 			e = e - 2 * dx;
 			if (interChange)
@@ -395,9 +400,8 @@ float Ccg2020SZTDrawLineView::BlineError(CDC* pDC, int x1, int y1, int x2, int y
 		else
 			x += xSign;
 		e += 2 * dy;
-		
 	}
-	return error;
+	return error/dx;
 }
 
 
@@ -425,12 +429,14 @@ float Ccg2020SZTDrawLineView::BlineError(CDC* pDC, int x1, int y1, int x2, int y
 //	}
 //}
 
-void Ccg2020SZTDrawLineView::MlineError(CDC* pDC, float x1, float y1, float x2, float y2,float &error) {
+void Ccg2020SZTDrawLineView::MlineSmooth(CDC* pDC, int x1, int y1, int x2, int y2,float &error,int &times) {
 	if (abs(x2 - x1) > 1 || abs(y2 - y1) > 1) {  
-		pDC->SetPixel((int)((x1 + x2) / 2 + 0.5) + m_wndWidth / 2, m_wndHeight / 2 - (int)((y1 + y2) / 2 + 0.5), RGB(0, 0, 255));
-		error += abs(x1 + x2 / 2 - (int)((x1 + x2) / 2 + 0.5)) + abs((y1 + y2) / 2 - (int)((y1 + y2) / 2 + 0.5));
-		this->MlineError(pDC, x1, y1, (x1 + x2) / 2, (y1 + y2) / 2,error);
-		this->MlineError(pDC, (x1 + x2) / 2, (y1 + y2) / 2, x2, y2,error);
+		pDC->SetPixel((int)((x1 + x2) / 2.0 + 0.5f) + m_wndWidth / 2, m_wndHeight / 2 - (int)((y1 + y2) / 2.0 + 0.5f), RGB(0, 0, 255));
+		error += (abs(x1 + x2 / 2.0 - (int)((x1 + x2) / 2.0 + 0.5f)) + abs((y1 + y2) / 2.0 - (int)((y1 + y2) / 2.0 + 0.5f)));
+		/*error -= 10;*/
+		times++;
+		this->MlineSmooth(pDC, x1, y1, (x1 + x2) / 2, (y1 + y2) / 2,error,times);
+		this->MlineSmooth(pDC, (x1 + x2) / 2, (y1 + y2) / 2, x2, y2,error,times);
 	}
 }
 

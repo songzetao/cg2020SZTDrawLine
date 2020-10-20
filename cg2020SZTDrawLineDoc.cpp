@@ -33,6 +33,8 @@ Ccg2020SZTDrawLineDoc::Ccg2020SZTDrawLineDoc() noexcept
 	// TODO: 在此添加一次性构造代码
 	m_opMode = 0;	//0:DDAline 1:Bline 2:Compare
 	m_ddaRunTime = 0;
+	m_bRunTime = 0;
+	m_mRunTime = 0;
 }
 
 Ccg2020SZTDrawLineDoc::~Ccg2020SZTDrawLineDoc()
