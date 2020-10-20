@@ -94,7 +94,11 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 	str.Format(L"%f", t);
 	pDC->TextOutW(100, 120, str);*/
 	/*pDoc->aTime = t;*/
-	
+	float q = 0;
+	for (int i = 0; i < 10; i++) {
+		q += this->DDAlineError(pDC, 0, 0, 25, 25);
+	}
+	pDoc->aError = q;
 
 	//startTime = clock();//计时开始
 	//for (int i = 0; i < 200; i++) {
@@ -108,6 +112,11 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 	re += this->BlineSmooth(pDC, 0, 0, 24, 25);
 	pDoc->bError = re;
 
+	float q2 = 0;
+	for (int i = 0; i < 10; i++) {
+		q2 += this->BlineError(pDC, 0, 0, 25, 25);
+	}
+	pDoc->bError = q2;
 	//startTime = clock();//计时开始
 	//for (int i = 0; i < 200; i++) {
 	//	this->Mline(pDC, 0, 0, 99, 100);
@@ -123,6 +132,13 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 	this->MlineSmooth(pDC, 0, 0, 25, 25, e,times);
 	error += e / times;
 	pDoc->mError = error;
+
+	float q3 = 0;
+	int t = 0;
+
+		this->MlineError(pDC, 0, 0, 25, 25,q3,t,times);
+
+	pDoc->mError = q3*10;
 
 	if (pDoc->m_opMode == 0) {
 		this->DDAline(pDC, 0, 0, 400, 150);
@@ -166,10 +182,6 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 		t = endTime - startTime;
 		pDoc->m_bRunTime = t;
 		pDoc->UpdateAllViews(this);
-
-
-		
-	
 	}
 	else if(pDoc->m_opMode==2) {
 		this->DDAline(pDC, 0, 0, 400, 150);
@@ -307,7 +319,28 @@ void Ccg2020SZTDrawLineView::DDAline(CDC* pDC, int x1, int y1, int x2, int y2)
 	}
 }
 
+float Ccg2020SZTDrawLineView::DDAlineError(CDC* pDC, int x1, int y1, int x2, int y2)
+{
+	int steps;
+	float error = 0;
+	float m, x, y, dx, dy;
+	x = x1 + 0.5f;
+	y = y1 + 0.5f;
+	steps = abs(x2 - x1) > abs(y2 - y1) ? abs(x2 - x1) : abs(y2 - y1);
 
+	dx = (float)(x2 - x1) / steps;
+	dy = (float)(y2 - y1) / steps;
+
+	for (int i = 0; i <= steps; i++) {
+		if (i == steps - 1) {
+			error += abs(x - x2) + abs(y - y2);
+		}
+		pDC->SetPixel((int)x + m_wndWidth / 2, (int)m_wndHeight / 2 - y, RGB(1, 255, 1));
+		x += dx;
+		y += dy;
+	}
+	return error;
+}
 
 float Ccg2020SZTDrawLineView::DDAlineSmooth(CDC* pDC,int x1, int y1, int x2, int y2)
 {
@@ -404,7 +437,55 @@ float Ccg2020SZTDrawLineView::BlineSmooth(CDC* pDC, int x1, int y1, int x2, int 
 	return error/dx;
 }
 
+float Ccg2020SZTDrawLineView::BlineError(CDC* pDC, int x1, int y1, int x2, int y2)
+{
+	int x, y, dx, dy, e, xSign, ySign, interChange = 0;
+	float error = 0;
+	float ry;
+	dx = abs(x2 - x1);
+	dy = abs(y2 - y1);
+	if (dx < dy) {
+		int temp;
+		interChange = 1;
+		temp = dx;
+		dx = dy;
+		dy = temp;
+	}
+	xSign = (x2 >= x1) ? 1 : -1;
+	ySign = (y2 >= y1) ? 1 : -1;
+	x = x1;
+	y = y1;
+	e = 2 * dy - dx;
+	for (int i = 0; i <= dx; i++) {
+		pDC->SetPixel(x + m_wndWidth / 2, m_wndHeight / 2 - y, RGB(0, 0, 255));
+		if (i == dx) {
+			//ry = (float)(x - x1) / (x2 - x1) * (y2 - y1) + y1;
+			error += abs(y2 - y)+abs(x2-x);
 
+		}
+		
+		
+		if (e > 0) {
+			e = e - 2 * dx;
+			if (interChange)
+				x += xSign;
+			else
+				y += ySign;
+		}
+		if (interChange)
+			y += ySign;
+		else
+			x += xSign;
+		e += 2 * dy;
+	}
+	if (error == 0) {
+		return error+0.5;
+	}
+	else {
+		return error;
+	}
+	
+}
 
 //int Ccg2020SZTDrawLineView::Mline(CDC* pDC, int x1, int y1, int x2, int y2) {
 //	if ((x2 - x1) <= 1 && (y2 - y1) <= 1) {
@@ -452,4 +533,21 @@ void Ccg2020SZTDrawLineView::Mline(CDC* pDC, int x1, int y1, int x2, int y2) {
 
 void Ccg2020SZTDrawLineView::BresenhamArc(float theTa1, float theTa2, float R) {
 
+}
+
+void Ccg2020SZTDrawLineView::MlineError(CDC* pDC, float x1, float y1, float x2, float y2, float& error, int& times,int count) {
+	int ix1, ix2, iy1, iy2;
+	ix1 = (int)x1;
+	iy1 = (int)y1;
+	ix2 = (int)x2;
+	iy2 = (int)y2;
+	if (abs(x2 - x1) > 1 || abs(y2 - y1) > 1) {
+		pDC->SetPixel((int)((ix1 + ix2) / 2.0 + 0.5f) + m_wndWidth / 2, m_wndHeight / 2 - (int)((iy1 + iy2) / 2.0 + 0.5f), RGB(0, 0, 255));
+		times++;
+		if (times == count) {
+			error += (abs(x1 + x2 / 2.0 - (int)((ix1 + ix2) / 2.0 + 0.5f)) + abs((y1 + y2) / 2.0 - (int)((iy1 + iy2) / 2.0 + 0.5f)));
+		}
+		this->MlineError(pDC, x1, y1, (x1 + x2) / 2, (y1 + y2) / 2, error, times,count);
+		this->MlineError(pDC, (x1 + x2) / 2, (y1 + y2) / 2, x2, y2, error, times,count);
+	}
 }

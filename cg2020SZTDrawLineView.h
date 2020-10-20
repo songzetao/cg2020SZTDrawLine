@@ -27,6 +27,9 @@ public:
 	void MlineSmooth(CDC* pDC, int x1, int y1, int x2, int y2, float& error, int& times);
 	void Mline(CDC* pDC, int x1, int y1, int x2, int y2);
 	void BresenhamArc(float theTa1, float theTa2, float R);
+	float DDAlineError(CDC* pDC, int x1, int y1, int x2, int y2);
+	float BlineError(CDC* pDC, int x1, int y1, int x2, int y2);
+	void MlineError(CDC* pDC, float x1, float y1, float x2, float y2, float& error, int& times, int count);
 // 重写
 public:
 	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
