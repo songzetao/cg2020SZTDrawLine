@@ -20,7 +20,7 @@
 #define new DEBUG_NEW
 #endif
 
-
+#测试
 // Ccg2020SZTDrawLineView
 
 IMPLEMENT_DYNCREATE(Ccg2020SZTDrawLineView, CView)
