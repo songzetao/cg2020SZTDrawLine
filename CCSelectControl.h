@@ -41,6 +41,7 @@ public:
 //	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 //	float m_bRunTime;
 	virtual void OnInitialUpdate();
+	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 };
 
 

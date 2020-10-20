@@ -8,6 +8,7 @@
 #include"CCSelectControl.h"
 #include"CCSelectControl.h"
 #include"cg2020SZTDrawLineDoc.h"
+#include"resource.h"
 
 
 // CCSelectControl
@@ -170,5 +171,17 @@ void CCSelectControl::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
+	// TODO: 在此添加专用代码和/或调用基类
+	CStatic* ddaRunTime = (CStatic*)GetDlgItem(IDC_DDARUNTIME);
+	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
+	CString DDA_Time;
+	DDA_Time.Format(_T("DDA Run time:%f"), pDoc->m_ddaRunTime);
+	ddaRunTime->SetWindowTextW(DDA_Time);
+
+}
+
+
+void CCSelectControl::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/)
+{
 	// TODO: 在此添加专用代码和/或调用基类
 }
