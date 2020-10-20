@@ -22,6 +22,7 @@
 
 #测试
 #测试是否能回退版本
+#宋泽涛
 // Ccg2020SZTDrawLineView
 
 IMPLEMENT_DYNCREATE(Ccg2020SZTDrawLineView, CView)
