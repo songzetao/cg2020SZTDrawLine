@@ -43,6 +43,7 @@ public:
 	virtual void OnInitialUpdate();
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 	CString m_ddaRunTime;
+	afx_msg void OnStnClickedDdaruntime();
 };
 
 

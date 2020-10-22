@@ -46,6 +46,7 @@ BEGIN_MESSAGE_MAP(CCSelectControl, CFormView)
 //	ON_BN_CLICKED(ERROR, &CCSelectControl::OnClickedError)
 //	ON_BN_CLICKED(TIme, &CCSelectControl::OnClickedTime)
 //	ON_BN_CLICKED(SMOOTH, &CCSelectControl::OnClickedSmooth)
+ON_STN_CLICKED(IDC_DDARUNTIME, &CCSelectControl::OnStnClickedDdaruntime)
 END_MESSAGE_MAP()
 
 
@@ -181,8 +182,8 @@ void CCSelectControl::OnInitialUpdate()
 	//ddaRunTime->SetWindowTextW(DDA_Time);
 	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
 	UpdateData(TRUE);
-	m_ddaRunTime.Format(_T("DDA Run time:%f\nB Run time:%f\nM Run time:%f\n\nDDA Run error:%f\nB Run error:%f\nM Run error:%f"),
-		pDoc->m_ddaRunTime,pDoc->m_bRunTime,pDoc->m_mRunTime,pDoc->aError,pDoc->bError,pDoc->mError);
+	m_ddaRunTime.Format(_T("DDA Run time:%f\nB Run time:%f\nM Run time:%f\n\nDDA Run error:%f\nB Run error:%f\nM Run error:%f\n\nDDA Run smooth:%f\nB Run smooth:%f\nM Run smooth:%f\n"),
+		pDoc->m_ddaRunTime,pDoc->m_bRunTime,pDoc->m_mRunTime,pDoc->aError,pDoc->bError,pDoc->mError, pDoc->aSmooth, pDoc->bSmooth, pDoc->mSmooth);
 	UpdateData(FALSE);
 }
 
@@ -192,7 +193,12 @@ void CCSelectControl::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*
 	// TODO: 在此添加专用代码和/或调用基类
 	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
 	UpdateData(TRUE);
-	m_ddaRunTime.Format(_T("DDA Run time:%f\nB Run time:%f\nM Run time:%f\n\nDDA Run error:%f\nB Run error:%f\nM Run error:%f"),
-		pDoc->m_ddaRunTime, pDoc->m_bRunTime, pDoc->m_mRunTime, pDoc->aError, pDoc->bError, pDoc->mError);
-	UpdateData(FALSE);
+	m_ddaRunTime.Format(_T("DDA Run time:%f\nB Run time:%f\nM Run time:%f\n\nDDA Run error:%f\nB Run error:%f\nM Run error:%f\n\nDDA Run smooth:%f\nB Run smooth:%f\nM Run smooth:%f\n"),
+		pDoc->m_ddaRunTime, pDoc->m_bRunTime, pDoc->m_mRunTime, pDoc->aError, pDoc->bError, pDoc->mError, pDoc->aSmooth, pDoc->bSmooth, pDoc->mSmooth);	UpdateData(FALSE);
+}
+
+
+void CCSelectControl::OnStnClickedDdaruntime()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }
