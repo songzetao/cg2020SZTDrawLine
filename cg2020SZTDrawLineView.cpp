@@ -87,14 +87,14 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 	ddasmooth += this->DDAlineSmooth(pDC, x1, y1, x2, y2);
 	pDoc->aSmooth = ddasmooth;
 	float ddaError = 0;
-	ddaError += this->DDAlineSmooth(pDC, x1, y1, x2, y2);
+	ddaError += this->DDAlineError(pDC, x1, y1, x2, y2);
 	pDoc->aError = ddaError;
 
 	float bSmooth = 0;
 	bSmooth += this->BlineSmooth(pDC, x1, y1, x2, y2);
 	pDoc->bSmooth = bSmooth;
 	float bError = 0;
-	bError += this->BlineSmooth(pDC, x1, y1, x2, y2);
+	bError += this->BlineError(pDC, x1, y1, x2, y2);
 	pDoc->bError = bError;
 
 	float e=0;
@@ -107,8 +107,8 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 	this->MlineError(pDC, x1, y1, x2, y2,q3,t,times);
 	pDoc->mError = q3;
 
-	if (pDoc->m_opMode == 0) {
-		this->DDAline(pDC, 0, 0, 400, 150);
+	if (pDoc->m_opMode == 10) {
+		/*this->DDAline(pDC, 0, 0, 400, 150);
 		this->DDAline(pDC, 0, 0, 400, -150);
 		this->DDAline(pDC, 0, 0, -400, 150);
 		this->DDAline(pDC, 0, 0, -400, -150);
@@ -116,7 +116,7 @@ void Ccg2020SZTDrawLineView::OnDraw(CDC* /*pDC*/)
 		this->DDAline(pDC, 0, 0, -150, 400);
 		this->DDAline(pDC, 0, 0, 150, -400);
 		this->DDAline(pDC, 0, 0, -150, -400);
-		this->DDAline(pDC, 0, 0, 100, 100);
+		this->DDAline(pDC, 0, 0, 100, 100);*/
 		clock_t startTime, endTime;
 		startTime = clock();//计时开始
 		for (int i = 0; i < 200; i++) {

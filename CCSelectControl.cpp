@@ -107,7 +107,7 @@ void CCSelectControl::OnClickedDdaline()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
-	pDoc->m_opMode = 0;
+	pDoc->m_opMode = 10;
 	pDoc->UpdateAllViews(this);
 }
 
@@ -194,7 +194,8 @@ void CCSelectControl::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*
 	Ccg2020SZTDrawLineDoc* pDoc = (Ccg2020SZTDrawLineDoc*)GetDocument();
 	UpdateData(TRUE);
 	m_ddaRunTime.Format(_T("DDA Run time:%f\nB Run time:%f\nM Run time:%f\n\nDDA Run error:%f\nB Run error:%f\nM Run error:%f\n\nDDA Run smooth:%f\nB Run smooth:%f\nM Run smooth:%f\n"),
-		pDoc->m_ddaRunTime, pDoc->m_bRunTime, pDoc->m_mRunTime, pDoc->aError, pDoc->bError, pDoc->mError, pDoc->aSmooth, pDoc->bSmooth, pDoc->mSmooth);	UpdateData(FALSE);
+		pDoc->m_ddaRunTime, pDoc->m_bRunTime, pDoc->m_mRunTime, pDoc->aError, pDoc->bError, pDoc->mError, pDoc->aSmooth, pDoc->bSmooth, pDoc->mSmooth);	
+	UpdateData(FALSE);
 }
 
 
